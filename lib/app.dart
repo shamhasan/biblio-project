@@ -16,7 +16,7 @@ class BookInventoryApp extends ConsumerWidget {
     final router = ref.watch(appRouterProvider);
 
     return MaterialApp.router(
-      title: 'Manajemen Buku',
+      title: 'Biblio',
       debugShowCheckedModeBanner: false,
       themeMode: settings.themeMode,
       theme: AppTheme.light(fontFamily: settings.fontFamily),

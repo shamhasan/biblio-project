@@ -48,3 +48,6 @@ app.*.map.json
 lib/core/config/app_secrets.local.dart
 *.env
 env.local.json
+
+# Documentation
+/docs/

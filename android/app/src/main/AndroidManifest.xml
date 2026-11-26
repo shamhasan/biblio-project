@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
-        android:label="Manajemen Buku"
+        android:label="Biblio"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
