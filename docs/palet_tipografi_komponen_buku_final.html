@@ -1,0 +1,253 @@
+<!-- design/palette-preview.html · Versi 1.0 · PRD sumber: PRD Aplikasi Manajemen Buku Mandiri (Android MVP), v1.1 · Status: Approved · 2026-11-25 -->
+<!doctype html>
+<html lang="id" data-theme="light" data-font="sans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Palet, Token & Komponen: Aplikasi Manajemen Buku Mandiri (v1.0)</title>
+<style>
+:root{
+  --color-primary:#3E6251; --color-on-primary:#FFFFFF;
+  --color-secondary:#B34B24; --color-on-secondary:#FFFFFF;
+  --color-accent:#D99B26;
+  --color-background:#FAF6F0; --color-surface:#FFFFFF; --color-surface-alt:#F1EAE0;
+  --color-text:#1E1D1B; --color-text-muted:#5E5A54; --color-border:#E2D9CC;
+  --color-success:#2E6F40; --color-warning:#9A6300; --color-error:#B8332A; --color-info:#2B5F82;
+
+  --color-primary-50:#F2F7F4; --color-primary-100:#DFECE5; --color-primary-200:#C0D9CC;
+  --color-primary-300:#99BFAD; --color-primary-400:#6E9E88; --color-primary-500:#4B7A65;
+  --color-primary-600:#3E6251; --color-primary-700:#314E40; --color-primary-800:#243A30; --color-primary-900:#17261F;
+
+  --color-neutral-50:#FAF6F0; --color-neutral-100:#F1EAE0; --color-neutral-200:#E2D9CC;
+  --color-neutral-300:#C9BEB0; --color-neutral-400:#A3998C; --color-neutral-500:#7D756A;
+  --color-neutral-600:#5E5A54; --color-neutral-700:#3D3A36; --color-neutral-800:#232220; --color-neutral-900:#161615;
+
+  --font-sans:"Plus Jakarta Sans","Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-serif:"Lora","Merriweather",Georgia,"Times New Roman",serif;
+  --font-heading:var(--font-sans);
+  --font-body:var(--font-sans);
+
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-6:24px; --space-8:32px; --space-12:48px;
+  --radius-sm:8px; --radius-md:14px; --radius-lg:22px; --radius-full:9999px;
+  --shadow-sm:0 2px 6px rgba(30,29,27,.06);
+  --shadow-md:0 8px 20px rgba(30,29,27,.10);
+  --shadow-lg:0 16px 36px rgba(30,29,27,.16);
+  --duration-fast:160ms; --duration-base:260ms;
+}
+[data-theme="dark"]{
+  --color-primary:#84B59F; --color-on-primary:#12211A;
+  --color-secondary:#F0855E; --color-on-secondary:#261008;
+  --color-accent:#F2C14E;
+  --color-background:#161615; --color-surface:#232220; --color-surface-alt:#2E2C29;
+  --color-text:#F3EFEA; --color-text-muted:#ACA69E; --color-border:#383531;
+  --color-success:#6FCF97; --color-warning:#F2C94C; --color-error:#EB6A62; --color-info:#6CAEE0;
+  --shadow-sm:0 2px 6px rgba(0,0,0,.35);
+  --shadow-md:0 8px 20px rgba(0,0,0,.45);
+  --shadow-lg:0 16px 36px rgba(0,0,0,.55);
+}
+[data-font="serif"]{--font-heading:var(--font-serif);--font-body:var(--font-serif)}
+@media (prefers-reduced-motion: reduce){:root{--duration-fast:0ms;--duration-base:0ms}}
+
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:var(--font-body);background:var(--color-background);color:var(--color-text);
+  line-height:1.6;transition:background var(--duration-base) ease,color var(--duration-base) ease;
+}
+.ico{width:16px;height:16px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.wrap{max-width:1040px;margin:0 auto;padding:var(--space-6) var(--space-4) var(--space-12)}
+header{
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;
+  gap:var(--space-4);padding-bottom:var(--space-6);border-bottom:1px solid var(--color-border);margin-bottom:var(--space-8);
+}
+h1,h2,h3{font-family:var(--font-heading);margin:0 0 var(--space-2);line-height:1.25}
+h1{font-size:clamp(22px,4vw,30px);font-weight:700}
+h2{font-size:20px;font-weight:700;margin-top:var(--space-8);margin-bottom:var(--space-4)}
+.sub{color:var(--color-text-muted);font-size:14px;margin:0}
+.controls{display:flex;flex-wrap:wrap;gap:8px}
+.btn-pill{
+  min-height:44px;padding:0 16px;border-radius:var(--radius-full);
+  border:1px solid var(--color-border);background:var(--color-surface);
+  color:var(--color-text);font-family:inherit;font-size:13px;font-weight:600;
+  cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:var(--shadow-sm);
+}
+.btn-pill:focus-visible{outline:2px solid var(--color-primary);outline-offset:2px}
+.btn-pill.active{background:var(--color-primary);color:var(--color-on-primary);border-color:var(--color-primary)}
+
+.grid{display:grid;gap:var(--space-3);grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+.sw{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-sm)}
+.sw i{display:block;height:56px}
+.sw p{margin:8px 12px;font-size:12px;line-height:1.4}
+.sw span{color:var(--color-text-muted);display:block;margin-top:2px}
+
+.scale-row{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;margin-bottom:var(--space-4)}
+.scale-cell{border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--color-border);background:var(--color-surface)}
+.scale-cell i{display:block;height:38px}
+.scale-cell small{display:block;padding:4px;font-size:10px;text-align:center;line-height:1.2}
+@media(max-width:720px){.scale-row{grid-template-columns:repeat(5,minmax(0,1fr))}}
+
+.card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);box-shadow:var(--shadow-sm)}
+
+/* Generated Book Cover Showcase */
+.cover-showcase{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end}
+.gen-cover{
+  position:relative;border-radius:8px 14px 14px 8px;overflow:hidden;color:#FFFFFF;
+  display:flex;flex-direction:column;justify-content:space-between;
+  box-shadow:0 6px 18px rgba(0,0,0,.18);
+  background:linear-gradient(155deg,#1E7D54 0%,#0E5838 100%);
+}
+.gen-cover::before{content:"";position:absolute;top:0;bottom:0;left:0;width:11%;background:rgba(0,0,0,.20);border-right:1px solid rgba(255,255,255,.10)}
+.gen-cover::after{content:"";position:absolute;top:14%;right:10%;width:28%;aspect-ratio:1;border-radius:50%;border:2px solid rgba(255,255,255,.26)}
+.gen-cover.tone-terracotta{background:linear-gradient(155deg,#B8522E 0%,#7E3117 100%)}
+.gen-cover.tone-slate{background:linear-gradient(155deg,#2D5D7B 0%,#193A4F 100%)}
+.gen-cover.tone-amber{background:linear-gradient(155deg,#A46B1D 0%,#6D440E 100%)}
+.gen-cover-title{position:relative;z-index:1;font-weight:700;line-height:1.15;max-width:70%}
+.gen-cover-author{position:relative;z-index:1;font-weight:500;opacity:.92}
+
+.sz-sm{width:64px;height:92px;padding:10px 8px 8px 13px}
+.sz-sm .gen-cover-title{font-size:10px}
+.sz-sm .gen-cover-author{font-size:7.5px}
+
+.sz-lg{width:128px;height:184px;padding:18px 14px 16px 22px}
+.sz-lg .gen-cover-title{font-size:16px}
+.sz-lg .gen-cover-author{font-size:11px}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--color-border)}
+th{color:var(--color-text-muted);font-size:12px;text-transform:uppercase}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.typo-stack > div{padding:var(--space-3) 0;border-bottom:1px dashed var(--color-border)}
+.typo-stack > div:last-child{border-bottom:none}
+.demo-row{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:flex-end}
+.space-box{background:var(--color-primary);border-radius:4px}
+.radius-box{
+  width:96px;height:64px;background:var(--color-surface-alt);border:1px solid var(--color-border);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Design System &amp; Palet Token: Aplikasi Manajemen Buku Mandiri</h1>
+      <p class="sub">Versi 1.0 (Approved) · Sinkron dengan PRD v1.1 · Mode Terang/Gelap, Sans-Serif/Serif, Ikon Monokrom &amp; Generated Cover</p>
+    </div>
+    <div class="controls">
+      <button class="btn-pill active" id="fSans" type="button">Aa Sans-Serif</button>
+      <button class="btn-pill" id="fSerif" type="button">Aa Serif Buku</button>
+      <button class="btn-pill" id="themeBtn" type="button">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeTxt">Mode Gelap</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- SECTION: peran-warna -->
+  <h2>1. Peran Warna (Mode Terang &amp; Gelap)</h2>
+  <div class="grid">
+    <div class="sw"><i style="background:#3E6251"></i><p><b>primary</b><br>#3E6251 / #84B59F<span>CTA Scan ISBN, aksi utama</span></p></div>
+    <div class="sw"><i style="background:#FFFFFF"></i><p><b>on-primary</b><br>#FFFFFF / #12211A<span>Teks &amp; ikon di atas primary</span></p></div>
+    <div class="sw"><i style="background:#B34B24"></i><p><b>secondary</b><br>#B34B24 / #F0855E<span>Status Dipinjam, pill aktif navbar</span></p></div>
+    <div class="sw"><i style="background:#D99B26"></i><p><b>accent</b><br>#D99B26 / #F2C14E<span>Sorotan dekoratif non-teks</span></p></div>
+    <div class="sw"><i style="background:#FAF6F0"></i><p><b>background</b><br>#FAF6F0 / #161615<span>Latar kertas hangat / arang</span></p></div>
+    <div class="sw"><i style="background:#FFFFFF"></i><p><b>surface</b><br>#FFFFFF / #232220<span>Kartu buku, popup pinjam, navbar</span></p></div>
+    <div class="sw"><i style="background:#F1EAE0"></i><p><b>surface-alt</b><br>#F1EAE0 / #2E2C29<span>Filter chip &amp; pratinjau sampul</span></p></div>
+    <div class="sw"><i style="background:#1E1D1B"></i><p><b>text</b><br>#1E1D1B / #F3EFEA<span>Teks utama &amp; judul</span></p></div>
+    <div class="sw"><i style="background:#5E5A54"></i><p><b>text-muted</b><br>#5E5A54 / #ACA69E<span>Sapaan waktu, penulis, ISBN</span></p></div>
+    <div class="sw"><i style="background:#E2D9CC"></i><p><b>border</b><br>#E2D9CC / #383531<span>Garis tepi kartu &amp; input</span></p></div>
+    <div class="sw"><i style="background:#2E6F40"></i><p><b>success</b><br>#2E6F40 / #6FCF97<span>Selesai baca &amp; tersimpan</span></p></div>
+    <div class="sw"><i style="background:#B8332A"></i><p><b>error</b><br>#B8332A / #EB6A62<span>Galat koneksi/timeout GAS App</span></p></div>
+  </div>
+
+  <!-- SECTION: skala -->
+  <h2>2. Skala Nuansa (50 – 900)</h2>
+  <p class="sub" style="margin-bottom:8px"><b>Primary (Sage Green)</b></p>
+  <div class="scale-row">
+    <div class="scale-cell"><i style="background:#F2F7F4"></i><small>50<br>#F2F7F4</small></div>
+    <div class="scale-cell"><i style="background:#DFECE5"></i><small>100<br>#DFECE5</small></div>
+    <div class="scale-cell"><i style="background:#C0D9CC"></i><small>200<br>#C0D9CC</small></div>
+    <div class="scale-cell"><i style="background:#99BFAD"></i><small>300<br>#99BFAD</small></div>
+    <div class="scale-cell"><i style="background:#6E9E88"></i><small>400<br>#6E9E88</small></div>
+    <div class="scale-cell"><i style="background:#4B7A65"></i><small>500<br>#4B7A65</small></div>
+    <div class="scale-cell"><i style="background:#3E6251"></i><small>600<br>#3E6251</small></div>
+    <div class="scale-cell"><i style="background:#314E40"></i><small>700<br>#314E40</small></div>
+    <div class="scale-cell"><i style="background:#243A30"></i><small>800<br>#243A30</small></div>
+    <div class="scale-cell"><i style="background:#17261F"></i><small>900<br>#17261F</small></div>
+  </div>
+
+  <!-- SECTION: komponen-cover -->
+  <h2>3. Komponen Generated Book Cover (Fallback Tanpa Cover URL / Input Manual)</h2>
+  <div class="card cover-showcase">
+    <div>
+      <div class="gen-cover sz-lg">
+        <div class="gen-cover-title">Negeri 5 Menara</div>
+        <div class="gen-cover-author">Ahmad Fuadi</div>
+      </div>
+      <p class="sub" style="margin-top:8px;font-size:12px">Detail (Large · Sage)</p>
+    </div>
+    <div>
+      <div class="gen-cover sz-lg tone-terracotta">
+        <div class="gen-cover-title">Filosofi Teras</div>
+        <div class="gen-cover-author">Henry Manampiring</div>
+      </div>
+      <p class="sub" style="margin-top:8px;font-size:12px">Detail (Large · Terracotta)</p>
+    </div>
+    <div>
+      <div class="gen-cover sz-sm tone-slate">
+        <div class="gen-cover-title">Laut Bercerita</div>
+        <div class="gen-cover-author">Leila S. Chudori</div>
+      </div>
+      <p class="sub" style="margin-top:8px;font-size:12px">List Card (Small · Slate)</p>
+    </div>
+    <div>
+      <div class="gen-cover sz-sm tone-amber">
+        <div class="gen-cover-title">Bumi Manusia</div>
+        <div class="gen-cover-author">Pramoedya A. Toer</div>
+      </div>
+      <p class="sub" style="margin-top:8px;font-size:12px">List Card (Small · Amber)</p>
+    </div>
+  </div>
+
+  <!-- SECTION: kontras -->
+  <h2>4. Validasi Kontras WCAG (Minimal 4.5:1)</h2>
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Pasangan Peran</th><th>Mode</th><th>Kontras</th></tr></thead>
+      <tbody>
+        <tr><td>text (#1E1D1B) / background (#FAF6F0)</td><td>Terang</td><td><span class="badge" data-fg="#1E1D1B" data-bg="#FAF6F0"></span></td></tr>
+        <tr><td>text-muted (#5E5A54) / background (#FAF6F0)</td><td>Terang</td><td><span class="badge" data-fg="#5E5A54" data-bg="#FAF6F0"></span></td></tr>
+        <tr><td>on-primary (#FFFFFF) / primary (#3E6251)</td><td>Terang</td><td><span class="badge" data-fg="#FFFFFF" data-bg="#3E6251"></span></td></tr>
+        <tr><td>secondary (#B34B24) / background (#FAF6F0)</td><td>Terang</td><td><span class="badge" data-fg="#B34B24" data-bg="#FAF6F0"></span></td></tr>
+        <tr><td>text (#F3EFEA) / background (#161615)</td><td>Gelap</td><td><span class="badge" data-fg="#F3EFEA" data-bg="#161615"></span></td></tr>
+        <tr><td>on-primary (#12211A) / primary (#84B59F)</td><td>Gelap</td><td><span class="badge" data-fg="#12211A" data-bg="#84B59F"></span></td></tr>
+        <tr><td>secondary (#F0855E) / background (#161615)</td><td>Gelap</td><td><span class="badge" data-fg="#F0855E" data-bg="#161615"></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION: tipografi & spasi -->
+  <h2>5. Tipografi, Spasi &amp; Radius</h2>
+  <div class="card typo-stack">
+    <div><span class="sub">H1 · Sapaan Dinamis Waktu Perangkat (Selamat Pagi / Siang / Sore / Malam)</span><h3 style="font-size:24px;font-weight:700;margin:4px 0 0">Selamat Pagi</h3></div>
+    <div><span class="sub">H2 · Judul Buku &amp; Kartu Utama</span><h3 style="font-size:20px;font-weight:700;margin:4px 0 0">Negeri 5 Menara — Ahmad Fuadi</h3></div>
+    <div><span class="sub">Body · Deskripsi, Catatan &amp; Input Form</span><p style="font-size:15px;margin:4px 0 0">Gunakan tombol ganti huruf di kanan atas untuk membandingkan kenyamanan baca antara Sans-Serif dan Serif Buku.</p></div>
+  </div>
+</div>
+
+<script>
+const lum=h=>{const c=[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255).map(v=>v<=.03928?v/12.92:((v+.055)/1.055)**2.4);return .2126*c[0]+.7152*c[1]+.0722*c[2]};
+const ratio=(a,b)=>{const[x,y]=[lum(a),lum(b)].sort((p,q)=>q-p);return(x+.05)/(y+.05)};
+document.querySelectorAll('[data-fg][data-bg]').forEach(el=>{
+  const r=ratio(el.dataset.fg,el.dataset.bg);
+  el.textContent=r.toFixed(2)+':1 '+(r>=7?'AAA':'AA');
+  el.style.background='rgba(46,111,64,.16)';
+});
+document.getElementById('themeBtn').onclick=()=>{
+  const r=document.documentElement;const d=r.dataset.theme!=='dark';r.dataset.theme=d?'dark':'light';
+  document.getElementById('themeTxt').textContent=d?'Mode Terang':'Mode Gelap';
+};
+document.getElementById('fSans').onclick=()=>{document.documentElement.dataset.font='sans';document.getElementById('fSans').classList.add('active');document.getElementById('fSerif').classList.remove('active')};
+document.getElementById('fSerif').onclick=()=>{document.documentElement.dataset.font='serif';document.getElementById('fSerif').classList.add('active');document.getElementById('fSans').classList.remove('active')};
+</script>
+</body>
+</html>
