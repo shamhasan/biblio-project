@@ -40,7 +40,7 @@ class HeroScanCard extends StatelessWidget {
           ),
           const SizedBox(height: 6.0),
           Text(
-            'Pindai kode batang di balik sampul buku untuk mengisi detailnya secara otomatis, atau telusuri rak bukumu.',
+            'Pindai kode batang (Barcode/ISBN) sampul buku bagian belakang untuk mengisi detailnya secara otomatis, atau telusuri rak bukumu.',
             style: textTheme.bodyMedium?.copyWith(
               color: palette.onPrimary.withValues(alpha: 0.92),
               height: 1.45,
