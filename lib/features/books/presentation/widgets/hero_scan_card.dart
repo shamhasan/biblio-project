@@ -4,9 +4,6 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/widgets/app_3d_button.dart';
 
-/// Kartu aksi utama (`.hero-scan-card`) pada `HomePage` dengan copywriting ramah pembaca buku (`D-013`):
-/// - CTA utama: **Pindai ISBN** (`/scanner`)
-/// - CTA sekunder: **Lihat Rak** (`/books`)
 class HeroScanCard extends StatelessWidget {
   const HeroScanCard({
     super.key,
@@ -67,39 +64,6 @@ class HeroScanCard extends StatelessWidget {
                 icon: Icons.qr_code_scanner_outlined,
                 label: 'Pindai ISBN',
               ),
-
-              // Tombol sekunder (.btn-hero-ghost) dengan ikon bookmark_border_outlined yang bersih
-              // OutlinedButton.icon(
-              //   key: const Key('hero_open_bookshelf_button'),
-              //   onPressed: onOpenBookshelfTap,
-              //   style: OutlinedButton.styleFrom(
-              //     backgroundColor: palette.onPrimary.withValues(alpha: 0.12),
-              //     foregroundColor: palette.onPrimary,
-              //     minimumSize: const Size(116.0, AppTokens.minTouchTarget),
-              //     padding: const EdgeInsets.symmetric(
-              //       horizontal: 16.0,
-              //       vertical: 10.0,
-              //     ),
-              //     side: BorderSide(
-              //       color: palette.onPrimary.withValues(alpha: 0.40),
-              //     ),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(AppTokens.radiusFull),
-              //     ),
-              //   ),
-              //   icon: Icon(
-              //     Icons.bookmark_border_outlined,
-              //     size: 16,
-              //     color: palette.onPrimary,
-              //   ),
-              //   label: Text(
-              //     'Lihat Rak',
-              //     style: textTheme.labelLarge?.copyWith(
-              //       color: palette.onPrimary,
-              //       fontWeight: FontWeight.w600,
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ],

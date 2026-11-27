@@ -6,11 +6,6 @@ import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../providers/settings_provider.dart';
 
-/// Layar Setelan Tampilan (`F-13`, rute `/settings`) sesuai `@docs/SCREENS.md`,
-/// `@docs/mockup_interaktif_lengkap_final_mvp.html`, dan keputusan `D-010` & `D-012`:
-/// - URL GAS App sudah terkonfigurasi otomatis tanpa perlu input manual.
-/// - Karena `/settings` termasuk tab utama di `FloatingBottomNav`, tombol Back dihilangkan
-///   dan `FloatingBottomNav` ditampilkan di layer `Stack` paling atas oleh `AppNavigationShell`.
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
@@ -29,7 +24,6 @@ class SettingsPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          // Top Header (.top-header — Tab utama navbar tanpa tombol Back sesuai D-012)
           SizedBox(
             height: AppTokens.minTouchTarget,
             child: Align(
@@ -44,7 +38,6 @@ class SettingsPage extends ConsumerWidget {
           ),
           const SizedBox(height: AppTokens.space16),
 
-          // Kartu 1: Tema Tampilan (Ikuti Sistem, Terang, Gelap)
           _SettingsSectionCard(
             title: 'Tema Tampilan',
             subtitle:
@@ -129,6 +122,19 @@ class SettingsPage extends ConsumerWidget {
               ],
             ),
           ),
+
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "Build and Developed by - Sham",
+                style: textTheme.labelLarge?.copyWith(
+                  color: AppColors.neutral500,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -163,16 +169,12 @@ class _SettingsSectionCard extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
+            style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: AppTokens.space4),
           Text(
             subtitle,
-            style: textTheme.bodySmall?.copyWith(
-              color: palette.textMuted,
-            ),
+            style: textTheme.bodySmall?.copyWith(color: palette.textMuted),
           ),
           const SizedBox(height: AppTokens.space12),
           child,
@@ -219,9 +221,7 @@ class _OptionPillButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppTokens.radiusMd),
         child: AnimatedContainer(
           duration: duration,
-          constraints: const BoxConstraints(
-            minHeight: 54.0,
-          ),
+          constraints: const BoxConstraints(minHeight: 54.0),
           padding: const EdgeInsets.symmetric(
             horizontal: AppTokens.space8,
             vertical: AppTokens.space8,
@@ -234,11 +234,7 @@ class _OptionPillButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(
-                icon,
-                size: 18,
-                color: fgColor,
-              ),
+              Icon(icon, size: 18, color: fgColor),
               const SizedBox(width: AppTokens.space8),
               Flexible(
                 child: Column(

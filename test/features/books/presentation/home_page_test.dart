@@ -99,6 +99,9 @@ void main() {
           .widget<Text>(find.byKey(const Key('dynamic_greeting_title')));
       expect(greetingText.data?.isNotEmpty, isTrue);
 
+      // Lewati delay 1000ms dan durasi animasi 1800ms
+      await tester.pump(const Duration(milliseconds: 1000));
+      await tester.pump(const Duration(milliseconds: 1800));
       await tester.pumpAndSettle();
 
       // Setelah animasi selesai, teks sapaan lengkap ("Selamat ...") tampil penuh

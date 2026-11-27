@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -35,6 +37,7 @@ class _HomePageState extends ConsumerState<HomePage>
   late final AnimationController _typewriterController;
   late final Animation<double> _typewriterAnimation;
   late final String _fullGreeting;
+  Timer? _delayTimer;
 
   @override
   void initState() {
@@ -42,17 +45,22 @@ class _HomePageState extends ConsumerState<HomePage>
     _fullGreeting = GreetingHelper.getGreeting(widget.nowOverride);
     _typewriterController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1800),
     );
     _typewriterAnimation = CurvedAnimation(
       parent: _typewriterController,
       curve: Curves.easeOutCubic,
     );
-    _typewriterController.forward();
+    _delayTimer = Timer(const Duration(milliseconds: 1000), () {
+      if (mounted) {
+        _typewriterController.forward();
+      }
+    });
   }
 
   @override
   void dispose() {
+    _delayTimer?.cancel();
     _typewriterController.dispose();
     super.dispose();
   }

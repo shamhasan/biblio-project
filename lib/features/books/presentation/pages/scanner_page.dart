@@ -25,15 +25,17 @@ class ScannerPage extends ConsumerStatefulWidget {
 }
 
 class _ScannerPageState extends ConsumerState<ScannerPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   MobileScannerController? _scannerController;
   late final AnimationController _laserController;
   late final TextEditingController _manualIsbnController;
   String? _manualIsbnError;
+  bool _isNavigatingAway = false;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _manualIsbnController = TextEditingController();
     _laserController = AnimationController(
       vsync: this,
@@ -60,10 +62,46 @@ class _ScannerPageState extends ConsumerState<ScannerPage>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _laserController.dispose();
     _manualIsbnController.dispose();
     _scannerController?.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!widget.enableCamera || _scannerController == null) return;
+
+    if (state == AppLifecycleState.resumed) {
+      final isCurrentRoute = ModalRoute.of(context)?.isCurrent ?? true;
+      if (isCurrentRoute && !_isNavigatingAway) {
+        _laserController.repeat(reverse: true);
+        _scannerController?.start();
+      }
+    } else if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused ||
+        state == AppLifecycleState.hidden ||
+        state == AppLifecycleState.detached) {
+      _laserController.stop();
+      _scannerController?.stop();
+    }
+  }
+
+  Future<T?> _navigateWithCameraPause<T>(Future<T?> Function() action) async {
+    _isNavigatingAway = true;
+    _laserController.stop();
+    await _scannerController?.stop();
+
+    if (!mounted) return null;
+    final result = await action();
+    _isNavigatingAway = false;
+
+    if (mounted && widget.enableCamera) {
+      _laserController.repeat(reverse: true);
+      await _scannerController?.start();
+    }
+    return result;
   }
 
   void _handleBarcodeCapture(BarcodeCapture capture) {
@@ -103,9 +141,11 @@ class _ScannerPageState extends ConsumerState<ScannerPage>
     ref.listen<IsbnLookupState>(isbnLookupProvider, (previous, next) {
       if (next is IsbnLookupFound && mounted) {
         ref.read(isbnLookupProvider.notifier).reset();
-        context.push(
-          AppRoutes.bookForm,
-          extra: BookFormArgs.prefill(next.metadata),
+        _navigateWithCameraPause(
+          () => context.push(
+            AppRoutes.bookForm,
+            extra: BookFormArgs.prefill(next.metadata),
+          ),
         );
       }
     });
@@ -195,9 +235,11 @@ class _ScannerPageState extends ConsumerState<ScannerPage>
                       onDetect: _handleBarcodeCapture,
                       errorBuilder: (context, error, child) {
                         return _CameraPermissionFallback(
-                          onManualInputTap: () => context.push(
-                            AppRoutes.bookForm,
-                            extra: BookFormArgs.manual(),
+                          onManualInputTap: () => _navigateWithCameraPause(
+                            () => context.push(
+                              AppRoutes.bookForm,
+                              extra: BookFormArgs.manual(),
+                            ),
                           ),
                         );
                       },
@@ -335,7 +377,9 @@ class _ScannerPageState extends ConsumerState<ScannerPage>
                       onPressed: () {
                         final targetId = lookupState.existingBook.id;
                         ref.read(isbnLookupProvider.notifier).reset();
-                        context.push(AppRoutes.bookDetail(targetId));
+                        _navigateWithCameraPause(
+                          () => context.push(AppRoutes.bookDetail(targetId)),
+                        );
                       },
                       child: const Text('Lihat Detail Buku'),
                     ),
@@ -392,9 +436,11 @@ class _ScannerPageState extends ConsumerState<ScannerPage>
                       onPressed: () {
                         final scannedIsbn = lookupState.normalizedIsbn;
                         ref.read(isbnLookupProvider.notifier).reset();
-                        context.push(
-                          AppRoutes.bookForm,
-                          extra: BookFormArgs.manual(initialIsbn: scannedIsbn),
+                        _navigateWithCameraPause(
+                          () => context.push(
+                            AppRoutes.bookForm,
+                            extra: BookFormArgs.manual(initialIsbn: scannedIsbn),
+                          ),
                         );
                       },
                       icon: const Icon(Icons.edit_outlined, size: 16),
@@ -462,9 +508,11 @@ class _ScannerPageState extends ConsumerState<ScannerPage>
                   onPressed: () {
                     final raw = _manualIsbnController.text.trim();
                     ref.read(isbnLookupProvider.notifier).reset();
-                    context.push(
-                      AppRoutes.bookForm,
-                      extra: BookFormArgs.manual(initialIsbn: raw),
+                    _navigateWithCameraPause(
+                      () => context.push(
+                        AppRoutes.bookForm,
+                        extra: BookFormArgs.manual(initialIsbn: raw),
+                      ),
                     );
                   },
                   icon: const Icon(Icons.edit_note_outlined, size: 18),
